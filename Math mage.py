@@ -87,7 +87,7 @@ def character_limit(username_entry):
     if len(username_entry.get()) > 0:
         username_entry.set(username_entry.get()[:10])
 
-# !!!!!!error here, this function break the whole program!!!!!
+# check if the username is empty or not 
 def check_username():
     global username_entry
 
