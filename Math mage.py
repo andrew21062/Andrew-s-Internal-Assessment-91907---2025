@@ -2,7 +2,6 @@
 # 08/04/25
 
 import random
-import time
 from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
@@ -50,7 +49,8 @@ advanced_questions = [
     {"question": "5x−6=3x+10", "answer": 8},
     {"question": "2x+6=4x−10", "answer": 8}, {"question": "2x+1=3x−5", "answer": 6},
     {"question": "2x-x=0+x", "answer": 0},
-    {"question": "7x=0", "answer": 0}, {"question": "0+5=5+x", "answer": 0}, {"question": "3x−4=4x−5", "answer": 1},
+    {"question": "7x=0", "answer": 0}, {"question": "0+5=5+x", "answer": 0},
+    {"question": "3x−4=4x−5", "answer": 1},
     {"question": "4x−3=5x-7", "answer": 4}, {"question": "3x−1=4x-9", "answer": 8},
     {"question": "x+7=3x+3", "answer": 2},
     {"question": "2x+36=5x+9", "answer": 9}, {"question": "7x−5=6x+3", "answer": 8},
@@ -77,7 +77,7 @@ expert_questions = [
     {"question": "x+8=5(x+2)−6", "answer": 1}, {"question": "6x+1=5(2x−3)", "answer": 4},
     {"question": "3(x+4)=2x+18", "answer": 6},
     {"question": "5(x+3)=9+6+x", "answer": 0}, {"question": "2(x-4)+3x=−5", "answer": 3},
-    {"question": "((x+2)/5)​=3", "answer": 13},
+    {"question": "((x+2)/5)=3", "answer": 13},
     {"question": "4(x−2)=3x+8", "answer": 16}, {"question": "7x+1=3(2-x)", "answer": 2},
     {"question": "2x+7=3x+5", "answer": 2},
     {"question": "3(x+5)=2(x+8)+10", "answer": 11}, {"question": "2+4(3x+2)=2(5x+1)+14", "answer": 3}]
@@ -87,18 +87,15 @@ def character_limit(username_entry):
     if len(username_entry.get()) > 0:
         username_entry.set(username_entry.get()[:10])
 
-# check if the username is empty or not 
-def check_username():
+
+def check_username_basic():
     global username_entry
 
-    try:
-        if len(username_entry.get()) == 0:
-            messagebox.showerror('Python Error', 'Error: This is an Error Message!')
-            for widget in main_win.winfo_children():
-                widget.destroy()
-            title_screen()
-    except:
-        pass
+    username = username_entry.get().strip()  # Remove leading/trailing spaces
+    if username:  # If the entry is not empty after stripping spaces
+        basic_difficulty()
+    else:
+        messagebox.showerror("Error", "Please enter a username.")
 
 def check_difficulty():
     if difficulty == 0:
@@ -126,22 +123,32 @@ def get_basic_question():
     global answer_button3
 
     question_1 = random.choice(basic_questions)
-    answer_button1 = Button(main_win, text=question_1['question'], command=question_1_damage, font=("Arial", 22),width=9, bg='deep sky blue')
-    answer_button1.place(x=90, y=445)
+    answer_button1 = Button(main_win, text=f"\U000026A1 {question_1['question']}", command=question_1_damage,
+                            font=("Arial", 22),width=10, bg='deep sky blue')
+    answer_button1.place(x=75, y=445)
 
     question_2 = random.choice(basic_questions)
-    answer_button2 = Button(main_win, text=question_2['question'], command=question_2_damage, font=("Arial", 22),width=9, bg='orange')
-    answer_button2.place(x=310, y=445)
+    answer_button2 = Button(main_win, text=f"\U00002600 {question_2['question']}", command=question_2_damage,
+                            font=("Arial", 22),width=10, bg='orange')
+    answer_button2.place(x=290, y=445)
 
     question_3 = random.choice(basic_questions)
-    answer_button3 = Button(main_win, text=question_3['question'], command=question_3_damage, font=("Arial", 22),width=9, bg='yellow')
-    answer_button3.place(x=195, y=520)
+    answer_button3 = Button(main_win, text=f"\U0001F319 {question_3['question']}", command=question_3_damage,
+                            font=("Arial", 22),width=10, bg='yellow')
+    answer_button3.place(x=180, y=520)
 
 def check_player_hp():
     global life_img_label_1
     global life_img_label_2
     global life_img_label_3
     global player_hp
+
+    try:
+        life_img_label_1.destroy()
+        life_img_label_2.destroy()
+        life_img_label_3.destroy()
+    except:
+        pass
 
     heart_img = Image.open('heart_image.png')
     heart_img = heart_img.resize((65, 65), )
@@ -159,7 +166,7 @@ def check_player_hp():
         life_img_label_1 = Label(main_win, image=life_img)
         life_img_label_1.place(x=0, y=3)
         life_img_label_2 = Label(main_win, image=life_img)
-        life_img_label_2.place(x=60, y=3)
+        life_img_label_2.place(x=64, y=3)
 
     elif player_hp == 1:
         life_img_label_1 = Label(main_win, image=life_img)
@@ -176,7 +183,6 @@ def check_player_hp():
 
 def question_1_damage():
     global basic_enemy_hp
-    damage = question_1['answer']
     basic_enemy_hp = basic_enemy_hp - question_1['answer']
     enemy_hp_label = Label(main_win, text=f" HP: {basic_enemy_hp} ", font=("Arial", 22, "bold"), bg='white')
     enemy_hp_label.place(x=230, y=395)
@@ -184,26 +190,26 @@ def question_1_damage():
 
 def question_2_damage():
     global basic_enemy_hp
-    damage = question_2['answer']
-    basic_enemy_hp = basic_enemy_hp - question_1['answer']
+    basic_enemy_hp = basic_enemy_hp - question_2['answer']
     enemy_hp_label = Label(main_win, text=f" HP: {basic_enemy_hp} ", font=("Arial", 22, "bold"), bg='white')
     enemy_hp_label.place(x=230, y=395)
     check_enemy_hp()
 
 def question_3_damage():
     global basic_enemy_hp
-    damage = question_3['answer']
-    basic_enemy_hp = basic_enemy_hp - question_1['answer']
+    basic_enemy_hp = basic_enemy_hp - question_3['answer']
     enemy_hp_label = Label(main_win, text=f" HP: {basic_enemy_hp} ", font=("Arial", 22, "bold"), bg='white')
     enemy_hp_label.place(x=230, y=395)
     check_enemy_hp()
 
 def attack_effect():
+    global attack_effect_label
+
     # Function to update the GIF frames in the label
     def update_frame(frame_index):
         try:
             attack_effect_label.config(image=frames[frame_index])
-            main_win.after(90, update_frame, (frame_index + 1) % len(frames))
+            main_win.after(70, update_frame, (frame_index + 1) % len(frames))
         except:
             pass
 
@@ -212,48 +218,81 @@ def attack_effect():
     
     # Convert the image to a format that can be used in Tkinter
     frames = []
-    for frame in range(image.n_frames):
-        image.seek(frame)
-        frames.append(ImageTk.PhotoImage(image.copy()))
-    # Create a label to display the GIF
-    attack_effect_label = Label(main_win)
-    attack_effect_label.pack()
+    try:
+        for frame in range(image.n_frames):
+            image.seek(frame)
+            frames.append(ImageTk.PhotoImage(image.copy()))
+        # Create a label to display the GIF
+        attack_effect_label = Label(main_win)
+        attack_effect_label.pack()
 
-    # remove the gif after 1300 milliseconds (1.3 seconds)
-    main_win.after(1300, attack_effect_label.destroy)
-    # Start updating the frames
-    update_frame(0)
+        # Start updating the frames
+        update_frame(0)
+    except:
+        pass
 
 def check_enemy_hp():
-    global life_img_label_1
-    global life_img_label_2
-    global life_img_label_3
-    global answer_button1
-    global answer_button2
-    global answer_button3
     global player_hp
+
     if basic_enemy_hp <= 0:
         player_hp = 3
         global question_count
-        question_count =+1
+        question_count += 1  # Increment the question count when the enemy is defeated
         attack_effect()
-        main_win.after(1200, check_difficulty)
+        main_win.after(900, check_difficulty)
     else:
-        player_hp = player_hp - 1
-        life_img_label_1.destroy()
-        life_img_label_2.destroy()
-        life_img_label_3.destroy()
-        answer_button1.destroy()
-        answer_button2.destroy()
-        answer_button3.destroy()
+        player_hp -= 1
         get_basic_question()
-        check_player_hp()
-        attack_effect()
-        check_difficulty()
+        if player_hp <= 0:
+            for widget in main_win.winfo_children():
+                widget.destroy()
+            main_win.title('Result')
+            gameover_label = Label(main_win, text='GAME OVER', font=("Arial", 50, "bold"), bg='red')
+            gameover_label.pack(pady=50)
+        else:
+            check_player_hp()
+
+def show_info_screen():
+    global info_screen
+
+    # Make sure only one info screen is opened at a time
+    if info_screen is None or not Toplevel.winfo_exists(info_screen):
+        # info screen's settings
+        info_screen = Toplevel()
+        info_screen.geometry('450x330')
+        info_screen.resizable(width=False, height=False)
+        info_screen.title('Info screen')
+
+        # info screen's widgets
+        tutorials_title = Label(info_screen, text=" How To Play \U0001F52A :",  font=("Arial", 15, "bold"))
+        tutorials_title.place(x=10,y=10)
+        tutorials_text_1 = Label(info_screen, text=" - You chose one of the four formulas/attack at the bottom. "
+                                                   "\n (\U000026A1, \U00002600, \U0001F319) The result of the chosen formula( x )"
+                                                   "\n  will be damage dealt to the enemy.", font=("Arial", 12))
+        tutorials_text_1.place(x=0,y=50)
+        tutorials_text_2 = Label(info_screen, text=" - There are multiple solutions, however some formulas will "
+                                      "\n insta kill the enemy." , font=("Arial", 12))
+        tutorials_text_2.place(x=0,y=120)
+        tutorials_text_3 = Label(info_screen, text=" - If the chosen formula does not immediately defeat the enemy"
+                                      "\n then you will loss one heart. When all hearts are lost, it "
+                                      "\n will be game over, however if you defeat your current enemy "
+                                      "\n you will regain all your hearts. \U0001F496", font=("Arial", 12))
+        tutorials_text_3.place(x=0,y=170)
+        tutorials_text_4 = Label(info_screen, text=" - To win, you must defeat 10 enemies without losing all "
+                                      "\n your hearts", font=("Arial", 12))
+        tutorials_text_4.place(x=0, y=260)
+
+        info_screen.protocol("WM_DELETE_WINDOW", on_closing)
+    else:
+        info_screen.focus()
+
+def on_closing():
+    global info_screen
+    info_screen.destroy()
+    info_screen = None
 
 # open basic difficulty window
 def basic_difficulty():
-    check_username()
     global difficulty
     difficulty = 0
     global basic_enemy_hp
@@ -264,18 +303,19 @@ def basic_difficulty():
     # clear the main screen
     for widget in main_win.winfo_children():
         widget.destroy()
-    main_win.title('Basic difficulty')
-    main_win.configure(bg='white')
 
-    # Creating widgets
+    # create widgets
     display_enemy_img()
-    
+
     enemy_hp_label = Label(main_win, text=f" HP: {basic_enemy_hp} ", font=("Arial", 22, "bold"), bg='white')
-    enemy_hp_label.place(x=230, y=395)
+    enemy_hp_label.place(x=220, y=395)
 
     enemy_img_label = Label(main_win, image=enemy_img)
     enemy_img_label.place(x=0, y=0)
-    enemy_img_label.place(x=135, y=80)
+    enemy_img_label.place(x=125, y=80)
+
+    info_button = Button(main_win, text=" ? ", command= show_info_screen, font=("Arial", 16, "bold"), width=3, fg="green")
+    info_button.place(x=480, y=360)
 
     get_basic_question()
     check_player_hp()
@@ -288,19 +328,26 @@ def title_screen():
     question_count = 0
     global max_questions
     max_questions = 10
+    global title_img_label
+    global title_label
+    global username_label
     global username_entry
+    global basic_button
+    global advanced_button
+    global expert_button
+    global info_screen
+    info_screen = None
 
     # images' settings
     image_1 = Image.open('image 1.png')
     image_1 = image_1.resize((190, 190), )
     title_img = ImageTk.PhotoImage(image_1)
 
-    # Creating widgets
     title_img_label = Label(main_win, image=title_img)
     title_img_label.pack(pady=20)
 
-    title = Label(main_win, text="Math Mage", font=("Times New Roman", 50, "bold"))
-    title.pack(pady=10)
+    title_label = Label(main_win, text="Math Mage", font=("Times New Roman", 50, "bold"))
+    title_label.pack(pady=10)
 
     username_label = Label(main_win, text="Username:", font=("Courier New", 20, "bold"))
     username_label.place(x=130, y=345)
@@ -310,7 +357,7 @@ def title_screen():
     username_entry.place(x=280, y=350)
     username.trace("w", lambda *args: character_limit(username))
 
-    basic_button = Button(main_win, text="Basic", command=basic_difficulty, font=("Helvetica", 23, "bold"), width=9,
+    basic_button = Button(main_win, text="Basic", command=check_username_basic, font=("Helvetica", 23, "bold"), width=9,
                       bg="green2")
     basic_button.pack(pady=80)
 
@@ -327,5 +374,4 @@ main_win = Tk()
 main_win.geometry('550x600')
 main_win.resizable(width=False, height=False)
 main_win.title('MATH MAGE')
-
 title_screen()
