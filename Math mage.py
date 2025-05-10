@@ -7,16 +7,13 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 
 enemy_list = [
-    {"image": "enemy1.png"}, {"image": "enemy2.png"},
-    {"image": "enemy3.png"}, {"image": "enemy4.png"},
-    {"image": "enemy5.png"}, {"image": "enemy6.png"},
-    {"image": "enemy7.png"}, {"image": "enemy8.png"},
+    {"image": "enemy1.png"}, {"image": "enemy2.png"}, {"image": "enemy3.png"}, {"image": "enemy4.png"},
+    {"image": "enemy5.png"}, {"image": "enemy6.png"}, {"image": "enemy7.png"}, {"image": "enemy8.png"},
     {"image": "enemy9.png"}, {"image": "enemy10.png"}]
 
 boss_list = [
-    {"boss No": 1, "image": "boss1.png"}, {"boss No": 2, "image": "boss2.png"},
-    {"boss No": 3, "image": "boss3.png"}, {"boss No": 4, "image": "boss4.png"},
-    {"boss No": 5, "image": "boss5.png"}]
+    {"image": "boss 1.png"}, {"image": "boss 2.png"}, {"image": "boss 3.png"}, {"image": "boss 4.png"},
+    {"image": "boss 5.png"}]
 
 basic_questions = [
     {"question": "x+7=10", "answer": 3}, {"question": "2x−4=6", "answer": 5}, {"question": "x−3=7", "answer": 10},
@@ -87,7 +84,6 @@ def character_limit(username_entry):
     if len(username_entry.get()) > 0:
         username_entry.set(username_entry.get()[:10])
 
-
 def check_username_basic():
     global username_entry
 
@@ -114,13 +110,17 @@ def display_enemy_img():
     enemy_img = enemy_img.resize((300, 300))
     enemy_img = ImageTk.PhotoImage(enemy_img)
 
+def display_boss_img():
+    global boss_img
+
+    current_boss = random.choice(boss_list)
+    current_boss = current_boss["image"]
+    boss_img = Image.open(current_boss)
+    boss_img = boss_img.resize((300, 300))
+    boss_img = ImageTk.PhotoImage(boss_img)
+
 def get_basic_question():
-    global question_1
-    global answer_button1
-    global question_2
-    global answer_button2
-    global question_3
-    global answer_button3
+    global question_1, answer_button1, question_2, answer_button2, question_3, answer_button3
 
     question_1 = random.choice(basic_questions)
     answer_button1 = Button(main_win, text=f"\U000026A1 {question_1['question']}", command=question_1_damage,
@@ -138,10 +138,7 @@ def get_basic_question():
     answer_button3.place(x=180, y=520)
 
 def check_player_hp():
-    global life_img_label_1
-    global life_img_label_2
-    global life_img_label_3
-    global player_hp
+    global life_img_label_1, life_img_label_2, life_img_label_3, player_hp
 
     try:
         life_img_label_1.destroy()
@@ -155,51 +152,44 @@ def check_player_hp():
     life_img = ImageTk.PhotoImage(heart_img)
 
     if player_hp == 3:
-        life_img_label_1 = Label(main_win, image=life_img)
+        life_img_label_1 = Label(main_win, image=life_img, borderwidth=3, relief="sunken")
         life_img_label_1.place(x=0, y=3)
-        life_img_label_2 = Label(main_win, image=life_img)
-        life_img_label_2.place(x=64, y=3)
-        life_img_label_3 = Label(main_win, image=life_img)
-        life_img_label_3.place(x=124, y=3)
+        life_img_label_2 = Label(main_win, image=life_img, borderwidth=3, relief="sunken")
+        life_img_label_2.place(x=70, y=3)
+        life_img_label_3 = Label(main_win, image=life_img, borderwidth=3, relief="sunken")
+        life_img_label_3.place(x=140, y=3)
 
     elif player_hp == 2:
-        life_img_label_1 = Label(main_win, image=life_img)
+        life_img_label_1 = Label(main_win, image=life_img, borderwidth=3, relief="sunken")
         life_img_label_1.place(x=0, y=3)
-        life_img_label_2 = Label(main_win, image=life_img)
-        life_img_label_2.place(x=64, y=3)
+        life_img_label_2 = Label(main_win, image=life_img, borderwidth=3, relief="sunken")
+        life_img_label_2.place(x=70, y=3)
 
     elif player_hp == 1:
-        life_img_label_1 = Label(main_win, image=life_img)
+        life_img_label_1 = Label(main_win, image=life_img, borderwidth=3, relief="sunken")
         life_img_label_1.place(x=0, y=3)
 
     elif player_hp == 0:
-        for widget in main_win.winfo_children():
-            widget.destroy()
-        main_win.title('Result')
-        gameover_label = Label(main_win, text='GAME OVER', font=("Arial", 50, "bold"), bg='red')
-        gameover_label.pack(pady=50)
+        result_screen()
 
     main_win.mainloop()
 
 def question_1_damage():
     global basic_enemy_hp
     basic_enemy_hp = basic_enemy_hp - question_1['answer']
-    enemy_hp_label = Label(main_win, text=f" HP: {basic_enemy_hp} ", font=("Arial", 22, "bold"), bg='white')
-    enemy_hp_label.place(x=230, y=395)
+    enemy_hp_label.config(text= f" HP: {basic_enemy_hp} ")
     check_enemy_hp()
 
 def question_2_damage():
     global basic_enemy_hp
     basic_enemy_hp = basic_enemy_hp - question_2['answer']
-    enemy_hp_label = Label(main_win, text=f" HP: {basic_enemy_hp} ", font=("Arial", 22, "bold"), bg='white')
-    enemy_hp_label.place(x=230, y=395)
+    enemy_hp_label.config(text= f" HP: {basic_enemy_hp} ")
     check_enemy_hp()
 
 def question_3_damage():
     global basic_enemy_hp
     basic_enemy_hp = basic_enemy_hp - question_3['answer']
-    enemy_hp_label = Label(main_win, text=f" HP: {basic_enemy_hp} ", font=("Arial", 22, "bold"), bg='white')
-    enemy_hp_label.place(x=230, y=395)
+    enemy_hp_label.config(text= f" HP: {basic_enemy_hp} ")
     check_enemy_hp()
 
 def attack_effect():
@@ -232,26 +222,27 @@ def attack_effect():
         pass
 
 def check_enemy_hp():
-    global player_hp
+    global player_hp, enemy_No
 
     if basic_enemy_hp <= 0:
+        # reset the player's hp
         player_hp = 3
-        global question_count
-        question_count += 1  # Increment the question count when the enemy is defeated
-        attack_effect()
-        main_win.after(900, check_difficulty)
+        # Increase the question count when the enemy is defeated
+        enemy_No += 1
+        if enemy_No > 6:
+            result_screen()
+        else:
+            attack_effect()
+            main_win.after(900, check_difficulty)
     else:
         player_hp -= 1
         get_basic_question()
         if player_hp <= 0:
-            for widget in main_win.winfo_children():
-                widget.destroy()
-            main_win.title('Result')
-            gameover_label = Label(main_win, text='GAME OVER', font=("Arial", 50, "bold"), bg='red')
-            gameover_label.pack(pady=50)
+            result_screen()
         else:
             check_player_hp()
 
+# open info screen
 def show_info_screen():
     global info_screen
 
@@ -264,8 +255,8 @@ def show_info_screen():
         info_screen.title('Info screen')
 
         # info screen's widgets
-        tutorials_title = Label(info_screen, text=" How To Play \U0001F52A :",  font=("Arial", 15, "bold"))
-        tutorials_title.place(x=10,y=10)
+        tutorials_title = Label(info_screen, text="How To Play \U0001F52A :",  font=("Arial", 15, "bold"))
+        tutorials_title.place(x=10,y=5)
         tutorials_text_1 = Label(info_screen, text=" - You chose one of the four formulas/attack at the bottom. "
                                                    "\n (\U000026A1, \U00002600, \U0001F319) The result of the chosen formula( x )"
                                                    "\n  will be damage dealt to the enemy.", font=("Arial", 12))
@@ -278,7 +269,7 @@ def show_info_screen():
                                       "\n will be game over, however if you defeat your current enemy "
                                       "\n you will regain all your hearts. \U0001F496", font=("Arial", 12))
         tutorials_text_3.place(x=0,y=170)
-        tutorials_text_4 = Label(info_screen, text=" - To win, you must defeat 10 enemies without losing all "
+        tutorials_text_4 = Label(info_screen, text=" - To win, you must defeat 6 enemies without losing all "
                                       "\n your hearts", font=("Arial", 12))
         tutorials_text_4.place(x=0, y=260)
 
@@ -291,30 +282,99 @@ def on_closing():
     info_screen.destroy()
     info_screen = None
 
+def restart():
+    # clear the main screen
+    for widget in main_win.winfo_children():
+        widget.destroy()
+    main_win.title('MATH MAGE')
+    title_screen()
+
+
+def result_screen():
+    # clear the main screen
+    for widget in main_win.winfo_children():
+        widget.destroy()
+
+    main_win.title('Result')
+    text_1_label = Label(main_win, text=" You got: ", font=("Arial", 30, "bold"))
+    text_1_label.pack(pady=10)
+
+    if enemy_No == 6:
+        result_label = Label(main_win, text=" A ", font=("Arial", 125, "bold"), fg="green2")
+        result_label.pack()
+    elif enemy_No <= 2:
+        result_label = Label(main_win, text=" F ", font=("Arial", 125, "bold"), fg="red4")
+        result_label.pack()
+    elif enemy_No >= 4:
+        result_label = Label(main_win, text=" B ", font=("Arial", 125, "bold"), fg="orange")
+        result_label.pack()
+    elif enemy_No < 4:
+        result_label = Label(main_win, text=" C ", font=("Arial", 125, "bold"), fg="red")
+        result_label.pack()
+
+    score_label = Label(main_win, text=f"Score: {enemy_No}/6", font=("Arial", 30, "bold"))
+    score_label.pack()
+
+    if difficulty == 0:
+        level_label = Label(main_win, text=f"Difficulty: \nBasic", font=("Arial", 30, "bold"), fg="green2")
+        level_label.pack(pady=5)
+
+    if difficulty == 1:
+        level_label = Label(main_win, text=f"Difficulty: \nAdvanced", font=("Arial", 30, "bold"), fg="orange")
+        level_label.pack(pady=5)
+
+    if difficulty == 2:
+        level_label = Label(main_win, text=f"Difficulty: \nExpert ", font=("Arial", 30, "bold"), fg="red")
+        level_label.pack(pady=5)
+
+    print_button = Button(main_win, text="Print result", font=("Helvetica", 23, "bold"), width=9, borderwidth=3,
+                          relief="raised")
+    print_button.pack()
+
+    aagain_button = Button(main_win, text="Again", command=restart, font=("Helvetica", 23, "bold"), width=9, borderwidth=3,
+                           relief="raised")
+    aagain_button.place(x=80, y=510)
+
+    end_button = Button(main_win, text="End", command= main_win.destroy , font=("Helvetica", 23, "bold"), width=9, borderwidth=3, relief="raised")
+    end_button.place(x=295, y=510)
+
 # open basic difficulty window
 def basic_difficulty():
-    global difficulty
+    global difficulty, basic_enemy_hp, basic_boss_hp, enemy_hp_label
     difficulty = 0
-    global basic_enemy_hp
-    basic_enemy_hp = 5
-    global basic_boss_hp
-    basic_boss_hp = 14
+    basic_enemy_hp = 10
+    basic_boss_hp = 15
 
     # clear the main screen
     for widget in main_win.winfo_children():
         widget.destroy()
 
     # create widgets
-    display_enemy_img()
+    if enemy_No <= 5:
+        display_enemy_img()
 
-    enemy_hp_label = Label(main_win, text=f" HP: {basic_enemy_hp} ", font=("Arial", 22, "bold"), bg='white')
-    enemy_hp_label.place(x=220, y=395)
+        enemy_hp_label = Label(main_win, text=f" HP: {basic_enemy_hp} ", font=("Arial", 22, "bold"), bg='white',
+                               borderwidth=1, relief="solid")
+        enemy_hp_label.place(x=220, y=395)
 
-    enemy_img_label = Label(main_win, image=enemy_img)
-    enemy_img_label.place(x=0, y=0)
-    enemy_img_label.place(x=125, y=80)
+        enemy_img_label = Label(main_win, image=enemy_img, borderwidth=3, relief="solid")
+        enemy_img_label.place(x=125, y=80)
+    else:
+        display_boss_img()
 
-    info_button = Button(main_win, text=" ? ", command= show_info_screen, font=("Arial", 16, "bold"), width=3, fg="green")
+        enemy_hp_label = Label(main_win, text=f" HP:  {basic_boss_hp} ", font=("Arial", 22, "bold"), bg='white',
+                               borderwidth=1, relief="solid")
+        enemy_hp_label.place(x=220, y=395)
+
+        boss_img_label = Label(main_win, image=boss_img, borderwidth=3, relief="solid")
+        boss_img_label.place(x=125, y=80)
+
+    question_No_label = Label(main_win, text=f" {enemy_No}/6 ", font=("Arial", 20, "bold"), bg='white',
+                              borderwidth=2, relief="solid")
+    question_No_label.place(x=470, y=10)
+
+    info_button = Button(main_win, text=" ? ", command= show_info_screen, font=("Arial", 16, "bold"),
+                         width=3, fg="green")
     info_button.place(x=480, y=360)
 
     get_basic_question()
@@ -322,20 +382,11 @@ def basic_difficulty():
 
 def title_screen():
     # Setting up variables
-    global player_hp
+    global player_hp, enemy_No, max_enemy, title_img_label, title_label, username_label
+    global username_entry, basic_button, advanced_button, expert_button, info_screen
     player_hp = 3
-    global question_count
-    question_count = 0
-    global max_questions
-    max_questions = 10
-    global title_img_label
-    global title_label
-    global username_label
-    global username_entry
-    global basic_button
-    global advanced_button
-    global expert_button
-    global info_screen
+    enemy_No = 1
+    max_enemy = 6
     info_screen = None
 
     # images' settings
@@ -349,22 +400,24 @@ def title_screen():
     title_label = Label(main_win, text="Math Mage", font=("Times New Roman", 50, "bold"))
     title_label.pack(pady=10)
 
-    username_label = Label(main_win, text="Username:", font=("Courier New", 20, "bold"))
-    username_label.place(x=130, y=345)
+    username_label = Label(main_win, text="Username: ", font=("Courier New", 22, "bold"))
+    username_label.place(x=126, y=345)
 
     username = StringVar()
     username_entry = Entry(main_win, textvariable=username, width=10, font=("Arial", 16))
-    username_entry.place(x=280, y=350)
+    username_entry.place(x=283, y=350)
     username.trace("w", lambda *args: character_limit(username))
 
-    basic_button = Button(main_win, text="Basic", command=check_username_basic, font=("Helvetica", 23, "bold"), width=9,
-                      bg="green2")
+    basic_button = Button(main_win, text="Basic", command=check_username_basic, font=("Helvetica", 23, "bold"),
+                          width=9, bg="green2", borderwidth=3, relief="raised")
     basic_button.pack(pady=80)
 
-    advanced_button = Button(main_win, text="Advanced", font=("Helvetica", 23, "bold"), width=9, bg="yellow")
+    advanced_button = Button(main_win, text="Advanced", font=("Helvetica", 23, "bold"), width=9, bg="yellow",
+                             borderwidth=3, relief="raised")
     advanced_button.place(x=80, y=500)
 
-    expert_button = Button(main_win, text="Expert", font=("Helvetica", 23, "bold"), width=9, bg="red")
+    expert_button = Button(main_win, text="Expert", font=("Helvetica", 23, "bold"), width=9, bg="red",
+                           borderwidth=3, relief="raised")
     expert_button.place(x=295, y=500)
 
     main_win.mainloop()
