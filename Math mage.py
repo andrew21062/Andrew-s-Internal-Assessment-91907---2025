@@ -96,10 +96,10 @@ def check_username_basic():
 def check_difficulty():
     if difficulty == 0:
         basic_difficulty()
-#    elif difficulty == 1:
-#        advanced_difficulty()
-#    elif difficulty == 1:
-#        expert _difficulty()
+    elif difficulty == 1:
+        advanced_difficulty()
+    elif difficulty == 2:
+        expert_difficulty()
 
 def display_enemy_img():
     global enemy_img
@@ -136,6 +136,42 @@ def get_basic_question():
     answer_button3 = Button(main_win, text=f"\U0001F319 {question_3['question']}", command=question_3_damage,
                             font=("Arial", 22),width=10, bg='yellow')
     answer_button3.place(x=180, y=520)
+
+def get_advanced_question():
+    global question_1, answer_button1, question_2, answer_button2, question_3, answer_button3
+
+    question_1 = random.choice(advanced_questions)
+    answer_button1 = Button(main_win, text=f"\U000026A1 {question_1['question']}", command=question_1_damage,
+                            font=("Arial", 21), width=12, bg='deep sky blue')
+    answer_button1.place(x=75, y=445)
+
+    question_2 = random.choice(advanced_questions)
+    answer_button2 = Button(main_win, text=f"\U00002600 {question_2['question']}", command=question_2_damage,
+                            font=("Arial", 21), width=12, bg='orange')
+    answer_button2.place(x=290, y=445)
+
+    question_3 = random.choice(advanced_questions)
+    answer_button3 = Button(main_win, text=f"\U0001F319 {question_3['question']}", command=question_3_damage,
+                            font=("Arial", 21), width=12, bg='yellow')
+    answer_button3.place(x=180, y=520)
+
+def get_expert_question():
+    global question_1, answer_button1, question_2, answer_button2, question_3, answer_button3
+
+    question_1 = random.choice(expert_questions)
+    answer_button1 = Button(main_win, text=f"\U000026A1 {question_1['question']}", command=question_1_damage,
+                            font=("Arial", 18), width=17, bg='deep sky blue')
+    answer_button1.place(x=30, y=445)
+
+    question_2 = random.choice(expert_questions)
+    answer_button2 = Button(main_win, text=f"\U00002600 {question_2['question']}", command=question_2_damage,
+                            font=("Arial", 18), width=15, bg='orange')
+    answer_button2.place(x=290, y=445)
+
+    question_3 = random.choice(expert_questions)
+    answer_button3 = Button(main_win, text=f"\U0001F319 {question_3['question']}", command=question_3_damage,
+                            font=("Arial", 18), width=15, bg='yellow')
+    answer_button3.place(x=155, y=520)
 
 def check_player_hp():
     global life_img_label_1, life_img_label_2, life_img_label_3, player_hp
@@ -175,22 +211,55 @@ def check_player_hp():
     main_win.mainloop()
 
 def question_1_damage():
-    global basic_enemy_hp
-    basic_enemy_hp = basic_enemy_hp - question_1['answer']
-    enemy_hp_label.config(text= f" HP: {basic_enemy_hp} ")
-    check_enemy_hp()
+    global basic_enemy_hp, advanced_enemy_hp, expert_enemy_hp
+
+    if difficulty == 0:
+        basic_enemy_hp = basic_enemy_hp - question_1['answer']
+        enemy_hp_label.config(text= f" HP: {basic_enemy_hp} ")
+        check_enemy_hp()
+    elif difficulty == 1:
+        advanced_enemy_hp = advanced_enemy_hp - question_1['answer']
+        enemy_hp_label.config(text=f" HP: {advanced_enemy_hp} ")
+        check_enemy_hp()
+    elif difficulty == 2:
+        expert_enemy_hp = expert_enemy_hp - question_1['answer']
+        enemy_hp_label.config(text=f" HP: {expert_enemy_hp} ")
+        check_enemy_hp()
 
 def question_2_damage():
-    global basic_enemy_hp
-    basic_enemy_hp = basic_enemy_hp - question_2['answer']
-    enemy_hp_label.config(text= f" HP: {basic_enemy_hp} ")
-    check_enemy_hp()
+    global basic_enemy_hp, advanced_enemy_hp, expert_enemy_hp
+
+    if difficulty == 0:
+        basic_enemy_hp = basic_enemy_hp - question_2['answer']
+        enemy_hp_label.config(text=f" HP: {basic_enemy_hp} ")
+        check_enemy_hp()
+    elif difficulty == 1:
+        advanced_enemy_hp = advanced_enemy_hp - question_2['answer']
+        enemy_hp_label.config(text=f" HP: {advanced_enemy_hp} ")
+        check_enemy_hp()
+    elif difficulty == 2:
+        expert_enemy_hp = expert_enemy_hp - question_2['answer']
+        enemy_hp_label.config(text=f" HP: {expert_enemy_hp} ")
+        check_enemy_hp()
+
+
 
 def question_3_damage():
-    global basic_enemy_hp
-    basic_enemy_hp = basic_enemy_hp - question_3['answer']
-    enemy_hp_label.config(text= f" HP: {basic_enemy_hp} ")
-    check_enemy_hp()
+    global basic_enemy_hp, advanced_enemy_hp, expert_enemy_hp
+
+    if difficulty == 0:
+        basic_enemy_hp = basic_enemy_hp - question_3['answer']
+        enemy_hp_label.config(text=f" HP: {basic_enemy_hp} ")
+        check_enemy_hp()
+    elif difficulty == 1:
+        advanced_enemy_hp = advanced_enemy_hp - question_3['answer']
+        enemy_hp_label.config(text=f" HP: {advanced_enemy_hp} ")
+        check_enemy_hp()
+    elif difficulty == 2:
+        expert_enemy_hp = expert_enemy_hp - question_3['answer']
+        enemy_hp_label.config(text=f" HP: {expert_enemy_hp} ")
+        check_enemy_hp()
+
 
 def attack_effect():
     global attack_effect_label
@@ -224,23 +293,62 @@ def attack_effect():
 def check_enemy_hp():
     global player_hp, enemy_No
 
-    if basic_enemy_hp <= 0:
-        # reset the player's hp
-        player_hp = 3
-        # Increase the question count when the enemy is defeated
-        enemy_No += 1
-        if enemy_No > 6:
-            result_screen()
+    if difficulty == 0:
+        if basic_enemy_hp <= 0:
+            # reset the player's hp
+            player_hp = 3
+            # Increase the question count when the enemy is defeated
+            enemy_No += 1
+            if enemy_No > 6:
+                result_screen()
+            else:
+               attack_effect()
+               main_win.after(900, check_difficulty)
         else:
-            attack_effect()
-            main_win.after(900, check_difficulty)
-    else:
-        player_hp -= 1
-        get_basic_question()
-        if player_hp <= 0:
-            result_screen()
+            player_hp -= 1
+            get_basic_question()
+            if player_hp <= 0:
+                result_screen()
+            else:
+                check_player_hp()
+
+    if difficulty == 1:
+        if advanced_enemy_hp <= 0:
+            # reset the player's hp
+            player_hp = 3
+            # Increase the question count when the enemy is defeated
+            enemy_No += 1
+            if enemy_No > 6:
+                result_screen()
+            else:
+                attack_effect()
+                main_win.after(900, check_difficulty)
         else:
-            check_player_hp()
+            player_hp -= 1
+            get_advanced_question()
+            if player_hp <= 0:
+                result_screen()
+            else:
+                check_player_hp()
+
+    if difficulty == 2:
+        if expert_enemy_hp <= 0:
+            # reset the player's hp
+            player_hp = 3
+            # Increase the question count when the enemy is defeated
+            enemy_No += 1
+            if enemy_No > 6:
+                result_screen()
+            else:
+                attack_effect()
+                main_win.after(900, check_difficulty)
+        else:
+            player_hp -= 1
+            get_expert_question()
+            if player_hp <= 0:
+                result_screen()
+            else:
+                check_player_hp()
 
 # open info screen
 def show_info_screen():
@@ -331,9 +439,9 @@ def result_screen():
                           relief="raised")
     print_button.pack()
 
-    aagain_button = Button(main_win, text="Again", command=restart, font=("Helvetica", 23, "bold"), width=9, borderwidth=3,
+    again_button = Button(main_win, text="Again", command=restart, font=("Helvetica", 23, "bold"), width=9, borderwidth=3,
                            relief="raised")
-    aagain_button.place(x=80, y=510)
+    again_button.place(x=80, y=510)
 
     end_button = Button(main_win, text="End", command= main_win.destroy , font=("Helvetica", 23, "bold"), width=9, borderwidth=3, relief="raised")
     end_button.place(x=295, y=510)
@@ -380,6 +488,90 @@ def basic_difficulty():
     get_basic_question()
     check_player_hp()
 
+# open advanced difficulty window
+def advanced_difficulty():
+    global difficulty, advanced_enemy_hp, advanced_boss_hp, enemy_hp_label
+    difficulty = 1
+    advanced_enemy_hp = 10
+    advanced_boss_hp = 15
+
+    # clear the main screen
+    for widget in main_win.winfo_children():
+        widget.destroy()
+
+    # create widgets
+    if enemy_No <= 5:
+        display_enemy_img()
+
+        enemy_hp_label = Label(main_win, text=f" HP: {advanced_enemy_hp} ", font=("Arial", 22, "bold"), bg='white',
+                                   borderwidth=1, relief="solid")
+        enemy_hp_label.place(x=220, y=395)
+
+        enemy_img_label = Label(main_win, image=enemy_img, borderwidth=3, relief="solid")
+        enemy_img_label.place(x=125, y=80)
+    else:
+        display_boss_img()
+
+        enemy_hp_label = Label(main_win, text=f" HP:  {advanced_boss_hp} ", font=("Arial", 22, "bold"), bg='white',
+                                   borderwidth=1, relief="solid")
+        enemy_hp_label.place(x=220, y=395)
+
+        boss_img_label = Label(main_win, image=boss_img, borderwidth=3, relief="solid")
+        boss_img_label.place(x=125, y=80)
+
+    question_No_label = Label(main_win, text=f" {enemy_No}/6 ", font=("Arial", 20, "bold"), bg='white',
+                                  borderwidth=2, relief="solid")
+    question_No_label.place(x=470, y=10)
+
+    info_button = Button(main_win, text=" ? ", command=show_info_screen, font=("Arial", 16, "bold"),
+                             width=3, fg="green")
+    info_button.place(x=480, y=360)
+
+    get_advanced_question()
+    check_player_hp()
+
+def expert_difficulty():
+    global difficulty, expert_enemy_hp, expert_boss_hp, enemy_hp_label
+    difficulty = 2
+    expert_enemy_hp = 12
+    expert_boss_hp = 18
+
+    # clear the main screen
+    for widget in main_win.winfo_children():
+        widget.destroy()
+
+    # create widgets
+    if enemy_No <= 5:
+        display_enemy_img()
+
+        enemy_hp_label = Label(main_win, text=f" HP: {expert_enemy_hp} ", font=("Arial", 22, "bold"), bg='white',
+                                   borderwidth=1, relief="solid")
+        enemy_hp_label.place(x=220, y=395)
+
+        enemy_img_label = Label(main_win, image=enemy_img, borderwidth=3, relief="solid")
+        enemy_img_label.place(x=125, y=80)
+    else:
+        display_boss_img()
+
+        enemy_hp_label = Label(main_win, text=f" HP:  {expert_boss_hp} ", font=("Arial", 22, "bold"), bg='white',
+                                   borderwidth=1, relief="solid")
+        enemy_hp_label.place(x=220, y=395)
+
+        boss_img_label = Label(main_win, image=boss_img, borderwidth=3, relief="solid")
+        boss_img_label.place(x=125, y=80)
+
+    question_No_label = Label(main_win, text=f" {enemy_No}/6 ", font=("Arial", 20, "bold"), bg='white',
+                                  borderwidth=2, relief="solid")
+    question_No_label.place(x=470, y=10)
+
+    info_button = Button(main_win, text=" ? ", command=show_info_screen, font=("Arial", 16, "bold"),
+                             width=3, fg="green")
+    info_button.place(x=480, y=360)
+
+    get_expert_question()
+    check_player_hp()
+
+
 def title_screen():
     # Setting up variables
     global player_hp, enemy_No, max_enemy, title_img_label, title_label, username_label
@@ -412,11 +604,11 @@ def title_screen():
                           width=9, bg="green2", borderwidth=3, relief="raised")
     basic_button.pack(pady=80)
 
-    advanced_button = Button(main_win, text="Advanced", font=("Helvetica", 23, "bold"), width=9, bg="yellow",
+    advanced_button = Button(main_win, text="Advanced", command=advanced_difficulty, font=("Helvetica", 23, "bold"), width=9, bg="yellow",
                              borderwidth=3, relief="raised")
     advanced_button.place(x=80, y=500)
 
-    expert_button = Button(main_win, text="Expert", font=("Helvetica", 23, "bold"), width=9, bg="red",
+    expert_button = Button(main_win, text="Expert", command=expert_difficulty, font=("Helvetica", 23, "bold"), width=9, bg="red",
                            borderwidth=3, relief="raised")
     expert_button.place(x=295, y=500)
 
