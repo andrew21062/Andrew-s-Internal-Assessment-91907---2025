@@ -442,34 +442,45 @@ def check_enemy_hp():
 
     # for expert difficulty:
     if difficulty == 2:
+        # check if the enemy had been defeated
         if expert_enemy_hp <= 0:
-            # reset the player's hp
+            # if so reset the player's hp
             player_hp = 3
-            # Increase the question count when the enemy is defeated
+            # if so increase the question count
             enemy_No += 1
+            # if the total enemies defeated is over 6, then jump to result screen
             if enemy_No > 6:
                 result_screen()
+            # if not over 6 then:
             else:
+                # play attack gif
                 attack_effect()
+                # pause BGM, then play attack sound effect
                 pygame.mixer_music.pause()
                 pygame.mixer.Channel(1).play(pygame.mixer.Sound("audio/attack sound.mp3"))
+                # after 900 millisecond check the player's difficulty to refresh the question screen
                 main_win.after(900, check_difficulty)
+        # if the enemy is not dead then:
         else:
+            # the player loses one HP
             player_hp -= 1
+            # the player loses one HP
             get_expert_question()
+            # if the player's HP is 0, then jump to result screen
             if player_hp <= 0:
                 result_screen()
             else:
+                # check the player HP to refresh heart images
                 check_player_hp()
 
 
-# open info screen
+# the info screen's settings
 def show_info_screen():
     global info_screen
 
     # Make sure only one info screen is opened at a time
     if info_screen is None or not Toplevel.winfo_exists(info_screen):
-        # info screen's settings
+        # info screen's geometry
         info_screen = Toplevel()
         info_screen.geometry('450x330')
         info_screen.resizable(width=False, height=False)
@@ -499,84 +510,104 @@ def show_info_screen():
         info_screen.focus()
 
 
+# close the info screen
 def on_closing():
     global info_screen
+
     info_screen.destroy()
     info_screen = None
 
 
+# restart the whole program
 def restart():
     # clear the main screen
     for widget in main_win.winfo_children():
         widget.destroy()
+    # reset the program
     main_win.title('MATH MAGE')
     title_screen()
 
 
+# the result screen's settings
 def result_screen():
     # clear the main screen
     for widget in main_win.winfo_children():
         widget.destroy()
 
+    # stop the BGM
     pygame.mixer_music.stop()
 
+    # change the window's title
     main_win.title('Result')
+
+    # result screen's widgets
     text_1_label = Label(main_win, text=" You got: ", font=("Arial", 30, "bold"))
     text_1_label.pack(pady=10)
 
+    # if the more than 6 enemies had been defeated then:
     if enemy_No > 6:
         # play victory music
         pygame.mixer.Channel(1).play(pygame.mixer.Sound("audio/win sound.mp3"))
+        # show grade A and score
         result_label = Label(main_win, text=" A ", font=("Arial", 125, "bold"), fg="green2")
         result_label.pack()
         score_label = Label(main_win, text="Score: 6/6", font=("Arial", 30, "bold"))
         score_label.pack()
+    # if less than or equal to 2 enemies defeated then:
     elif enemy_No <= 2:
         # play game over music
         pygame.mixer.Channel(1).play(pygame.mixer.Sound("audio/game over sound.mp3"))
+        # show grade F and score
         result_label = Label(main_win, text=" F ", font=("Arial", 125, "bold"), fg="red4")
         result_label.pack()
         score_label = Label(main_win, text=f"Score: {enemy_No}/6", font=("Arial", 30, "bold"))
         score_label.pack()
+    # if more than or equal to 4 enemies defeated then:
     elif enemy_No >= 4:
         # play victory music
         pygame.mixer_music.stop()
         pygame.mixer.Channel(1).play(pygame.mixer.Sound("audio/win sound.mp3"))
+        # show grade B and score
         result_label = Label(main_win, text=" B ", font=("Arial", 125, "bold"), fg="orange")
         result_label.pack()
         score_label = Label(main_win, text=f"Score: {enemy_No}/6", font=("Arial", 30, "bold"))
         score_label.pack()
+    # if less than 4 enemies defeated then:
     elif enemy_No < 4:
         # play game over music
         pygame.mixer.Channel(1).play(pygame.mixer.Sound("audio/game over sound.mp3"))
+        # show grade C and score
         result_label = Label(main_win, text=" C ", font=("Arial", 125, "bold"), fg="red")
         result_label.pack()
         score_label = Label(main_win, text=f"Score: {enemy_No}/6", font=("Arial", 30, "bold"))
         score_label.pack()
 
+    # show basic difficulty
     if difficulty == 0:
         level_label = Label(main_win, text=f"Difficulty: \nBasic", font=("Arial", 30, "bold"), fg="green2")
         level_label.pack(pady=5)
-
+    # show advanced difficulty
     if difficulty == 1:
         level_label = Label(main_win, text=f"Difficulty: \nAdvanced", font=("Arial", 30, "bold"), fg="orange")
         level_label.pack(pady=5)
-
+    # show expert difficulty
     if difficulty == 2:
         level_label = Label(main_win, text=f"Difficulty: \nExpert ", font=("Arial", 30, "bold"), fg="red")
         level_label.pack(pady=5)
 
+    # again button's settings
     again_button = Button(main_win, text="Again", command=restart, font=("Helvetica", 23, "bold"), bg="white",
                           width=9, borderwidth=3, relief="raised")
     again_button.place(x=80, y=450)
-
+    # end button's settings
     end_button = Button(main_win, text="End", command=main_win.destroy, font=("Helvetica", 23, "bold"), bg="white",
                         width=9,borderwidth=3, relief="raised")
     end_button.place(x=295, y=450)
 
 
-# open basic difficulty window
+# basic questions screen's settings
 def basic_difficulty():
+    # setting up variables
     global difficulty, basic_enemy_hp, basic_boss_hp, enemy_hp_label
     difficulty = 0
     basic_enemy_hp = 10
@@ -620,12 +651,15 @@ def basic_difficulty():
                          width=3, fg="green")
     info_button.place(x=480, y=360)
 
+    # get basic questions
     get_basic_question()
+    # check the player's HP for heart images
     check_player_hp()
 
 
-# open advanced difficulty window
+# advanced questions screen's settings
 def advanced_difficulty():
+    # setting up variables
     global difficulty, advanced_enemy_hp, advanced_boss_hp, enemy_hp_label
     difficulty = 1
     advanced_enemy_hp = 10
@@ -669,11 +703,15 @@ def advanced_difficulty():
                          width=3, fg="green")
     info_button.place(x=480, y=360)
 
+    # get advanced questions
     get_advanced_question()
+    # check the player's HP for heart images
     check_player_hp()
 
 
+# expert questions screen's settings
 def expert_difficulty():
+    # setting up variables
     global difficulty, expert_enemy_hp, expert_boss_hp, enemy_hp_label
     difficulty = 2
     expert_enemy_hp = 12
@@ -717,10 +755,13 @@ def expert_difficulty():
                          width=3, fg="green")
     info_button.place(x=480, y=360)
 
+    # get expert questions
     get_expert_question()
+    # check the player's HP for heart images
     check_player_hp()
 
 
+# the title screen's settings
 def title_screen():
     # Setting up variables
     global player_hp, enemy_No, max_enemy, title_img_label, title_label, username_label
@@ -735,6 +776,7 @@ def title_screen():
     image_1 = image_1.resize((190, 190), )
     title_img = ImageTk.PhotoImage(image_1)
 
+    # create widgets
     title_img_label = Label(main_win, image=title_img)
     title_img_label.pack(pady=20)
 
@@ -744,6 +786,7 @@ def title_screen():
     username_label = Label(main_win, text="Username: ", font=("Courier New", 22, "bold"))
     username_label.place(x=126, y=345)
 
+    # let username be a string variable
     username = StringVar()
     username_entry = Entry(main_win, textvariable=username, width=10, font=("Arial", 16))
     username_entry.place(x=283, y=350)
@@ -754,16 +797,15 @@ def title_screen():
     basic_button.pack(pady=80)
 
     advanced_button = Button(main_win, text="Advanced", command=check_username_advanced, font=("Helvetica", 23, "bold"),
-                             width=9, bg="yellow",
-                             borderwidth=3, relief="raised")
+                             width=9, bg="yellow", borderwidth=3, relief="raised")
     advanced_button.place(x=80, y=500)
 
-    expert_button = Button(main_win, text="Expert", command=check_username_expert, font=("Helvetica", 23, "bold"), width=9,
-                           bg="red",
-                           borderwidth=3, relief="raised")
+    expert_button = Button(main_win, text="Expert", command=check_username_expert, font=("Helvetica", 23, "bold"),
+                           width=9, bg="red", borderwidth=3, relief="raised")
     expert_button.place(x=295, y=500)
 
     main_win.mainloop()
+
 
 # main window's setting
 main_win = Tk()
