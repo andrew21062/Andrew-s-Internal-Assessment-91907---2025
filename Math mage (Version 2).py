@@ -258,7 +258,7 @@ def check_player_hp():
         pass
 
     # import heart image
-    heart_img = Image.open("assets/player HP/heart_image.png")
+    heart_img = Image.open("assets/player HP/heart 1.png")
     # resize the image to 65x65 pixels
     heart_img = heart_img.resize((65, 65), )
     life_img = ImageTk.PhotoImage(heart_img)
