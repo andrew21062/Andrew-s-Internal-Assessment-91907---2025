@@ -9,18 +9,30 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 
 
-# the image list of all normal enemies
-enemy_list = [
-    {"image": "assets/enemies/enemy1.png"}, {"image": "assets/enemies/enemy2.png"}, {"image": "assets/enemies/enemy3.png"},
-    {"image": "assets/enemies/enemy4.png"},{"image": "assets/enemies/enemy5.png"}, {"image": "assets/enemies/enemy6.png"},
-    {"image": "assets/enemies/enemy7.png"}, {"image": "assets/enemies/enemy8.png"},{"image": "assets/enemies/enemy9.png"},
-    {"image": "assets/enemies/enemy10.png"}]
+class enemy:
+    # the image list of all normal enemies
+    enemy_list = [
+        {"image": "assets/enemies/enemy1.png"}, {"image": "assets/enemies/enemy2.png"},
+        {"image": "assets/enemies/enemy3.png"},
+        {"image": "assets/enemies/enemy4.png"}, {"image": "assets/enemies/enemy5.png"},
+        {"image": "assets/enemies/enemy6.png"},
+        {"image": "assets/enemies/enemy7.png"}, {"image": "assets/enemies/enemy8.png"},
+        {"image": "assets/enemies/enemy9.png"},
+        {"image": "assets/enemies/enemy10.png"}]
 
-# the image list of all boss enemies
-boss_list = [
-    {"image": "assets/bosses/boss 1.png"},{"image": "assets/bosses/boss 2.png"},
-    {"image": "assets/bosses/boss 3.png"},{"image": "assets/bosses/boss 4.png"},
-    {"image": "assets/bosses/boss 5.png"}]
+    # the image list of all boss enemies
+    boss_list = [
+        {"image": "assets/bosses/boss 1.png"}, {"image": "assets/bosses/boss 2.png"},
+        {"image": "assets/bosses/boss 3.png"}, {"image": "assets/bosses/boss 4.png"},
+        {"image": "assets/bosses/boss 5.png"}]
+
+    def __init__(self, img_location):
+        self.img_location = img_location
+
+
+global enemy_list, boss_list
+list_1 = enemy("enemy_list")
+list_2 = enemy("boss_list")
 
 # questions list for basic difficultly (with answers)
 basic_questions = [
@@ -165,7 +177,7 @@ def display_enemy_img():
     global enemy_img
 
     # chose a random image from enemy_list, then import it
-    current_enemy = random.choice(enemy_list)
+    current_enemy = random.choice(list_1.enemy_list)
     current_enemy = current_enemy["image"]
     enemy_img = Image.open(current_enemy)
     # resize the image to 300x300 pixels
@@ -178,7 +190,7 @@ def display_boss_img():
     global boss_img
 
     # chose a random image from boss_list, then import it
-    current_boss = random.choice(boss_list)
+    current_boss = random.choice(list_2.boss_list)
     current_boss = current_boss["image"]
     boss_img = Image.open(current_boss)
     # resize the image to 300x300 pixels
@@ -247,6 +259,7 @@ def get_expert_question():
         answer_button3.place(x=140, y=520)
     except:
         pass
+
 
 # check the player's remain HP, then show hearts according to that number
 def check_player_hp():
@@ -505,7 +518,8 @@ def show_info_screen():
         tutorials_text_3 = Label(info_screen, text=" - If the chosen formula does not immediately defeat the enemy"
                                                    "\n then you will loss one heart. When all hearts are lost, it "
                                                    "\n will be game over, however if you defeat your current enemy "
-                                                   "\n you will regain all your hearts. \U0001F496", font=("ARCADECLASSIC", 12))
+                                                   "\n you will regain all your hearts. \U0001F496",
+                                 font=("ARCADECLASSIC", 12))
         tutorials_text_3.place(x=0, y=170)
         tutorials_text_4 = Label(info_screen, text=" - To win, you must defeat 6 enemies without losing all "
                                                    "\n your hearts", font=("ARCADECLASSIC", 12))
@@ -537,8 +551,11 @@ def restart():
 # the result screen's settings
 def result_screen():
     # clear the main screen
-    for widget in main_win.winfo_children():
-        widget.destroy()
+    try:
+        for widget in main_win.winfo_children():
+            widget.destroy()
+    except:
+        pass
 
     # stop the BGM
     pygame.mixer_music.stop()
@@ -552,7 +569,7 @@ def result_screen():
     result_background = ImageTk.PhotoImage(background_5)
 
     result_background_label = Label(main_win, image=result_background)
-    result_background_label.place(x=-10,y=0)
+    result_background_label.place(x=-10, y=0)
 
     text_1_label = Label(main_win, text=" You got: ", font=("ARCADECLASSIC", 30, "bold"))
     text_1_label.pack(pady=10)
@@ -621,8 +638,9 @@ def result_screen():
                           width=9, borderwidth=3, relief="raised")
     again_button.place(x=80, y=450)
     # end button's settings
-    end_button = Button(main_win, text="\U0001F480 End", command=main_win.destroy, font=("Helvetica", 23, "bold"), bg="white",
-                        width=9,borderwidth=3, relief="raised")
+    end_button = Button(main_win, text="\U0001F480 End", command=main_win.destroy, font=("Helvetica", 23, "bold"),
+                        bg="white",
+                        width=9, borderwidth=3, relief="raised")
     end_button.place(x=295, y=450)
 
     main_win.mainloop()
@@ -674,9 +692,9 @@ def basic_difficulty():
         boss_img_label = Label(main_win, image=boss_img, borderwidth=3, relief="solid")
         boss_img_label.place(x=125, y=80)
 
-    question_No_label = Label(main_win, text=f" {enemy_No}/6 ", font=("ARCADECLASSIC", 20, "bold"), bg='white',
+    question_No_label = Label(main_win, text=f" {enemy_No}/6 ", font=("ARCADECLASSIC", 23, "bold"), bg='white',
                               borderwidth=2, relief="solid")
-    question_No_label.place(x=470, y=10)
+    question_No_label.place(x=480, y=10)
 
     info_button = Button(main_win, text=" ? ", command=show_info_screen, font=("ARCADECLASSIC", 16, "bold"),
                          width=3, fg="green")
@@ -718,7 +736,8 @@ def advanced_difficulty():
 
         display_enemy_img()
 
-        enemy_hp_label = Label(main_win, text=f" HP: {advanced_enemy_hp} ", font=("ARCADECLASSIC", 22, "bold"), bg='white',
+        enemy_hp_label = Label(main_win, text=f" HP: {advanced_enemy_hp} ", font=("ARCADECLASSIC", 22, "bold"),
+                               bg='white',
                                borderwidth=1, relief="solid")
         enemy_hp_label.place(x=220, y=395)
 
@@ -727,16 +746,17 @@ def advanced_difficulty():
     else:
         display_boss_img()
 
-        enemy_hp_label = Label(main_win, text=f" HP:  {advanced_boss_hp} ", font=("ARCADECLASSIC", 22, "bold"), bg='white',
+        enemy_hp_label = Label(main_win, text=f" HP:  {advanced_boss_hp} ", font=("ARCADECLASSIC", 22, "bold"),
+                               bg='white',
                                borderwidth=1, relief="solid")
         enemy_hp_label.place(x=220, y=395)
 
         boss_img_label = Label(main_win, image=boss_img, borderwidth=3, relief="solid")
         boss_img_label.place(x=125, y=80)
 
-    question_No_label = Label(main_win, text=f" {enemy_No}/6 ", font=("ARCADECLASSIC", 20, "bold"), bg='white',
+    question_No_label = Label(main_win, text=f" {enemy_No}/6 ", font=("ARCADECLASSIC", 23, "bold"), bg='white',
                               borderwidth=2, relief="solid")
-    question_No_label.place(x=470, y=10)
+    question_No_label.place(x=480, y=10)
 
     info_button = Button(main_win, text=" ? ", command=show_info_screen, font=("ARCADECLASSIC", 16, "bold"),
                          width=3, fg="green")
@@ -773,11 +793,12 @@ def expert_difficulty():
 
     expert_background_label = Label(main_win, image=expert_background)
     expert_background_label.place(x=-10, y=0)
-    
+
     if enemy_No <= 5:
         display_enemy_img()
 
-        enemy_hp_label = Label(main_win, text=f" HP: {expert_enemy_hp} ", font=("ARCADECLASSIC", 22, "bold"), bg='white',
+        enemy_hp_label = Label(main_win, text=f" HP: {expert_enemy_hp} ", font=("ARCADECLASSIC", 22, "bold"),
+                               bg='white',
                                borderwidth=1, relief="solid")
         enemy_hp_label.place(x=220, y=395)
 
@@ -786,16 +807,17 @@ def expert_difficulty():
     else:
         display_boss_img()
 
-        enemy_hp_label = Label(main_win, text=f" HP:  {expert_boss_hp} ", font=("ARCADECLASSIC", 22, "bold"), bg='white',
+        enemy_hp_label = Label(main_win, text=f" HP:  {expert_boss_hp} ", font=("ARCADECLASSIC", 22, "bold"),
+                               bg='white',
                                borderwidth=1, relief="solid")
         enemy_hp_label.place(x=220, y=395)
 
         boss_img_label = Label(main_win, image=boss_img, borderwidth=3, relief="solid")
         boss_img_label.place(x=125, y=80)
 
-    question_No_label = Label(main_win, text=f" {enemy_No}/6 ", font=("ARCADECLASSIC", 20, "bold"), bg='white',
+    question_No_label = Label(main_win, text=f" {enemy_No}/6 ", font=("ARCADECLASSIC", 23, "bold"), bg='white',
                               borderwidth=2, relief="solid")
-    question_No_label.place(x=470, y=10)
+    question_No_label.place(x=480, y=10)
 
     info_button = Button(main_win, text=" ? ", command=show_info_screen, font=("ARCADECLASSIC", 16, "bold"),
                          width=3, fg="green")
@@ -826,21 +848,23 @@ def title_screen():
     title_background_label = Label(main_win, image=title_background)
     title_background_label.pack()
 
-    username_label = Label(main_win, text=" Username:                               ", font=("ARCADECLASSIC", 22, "bold"),
+    username_label = Label(main_win, text=" Username:                               ",
+                           font=("ARCADECLASSIC", 22, "bold"),
                            borderwidth=3, relief="sunken")
-    username_label.place(x=121, y=345)
+    username_label.place(x=121, y=375)
 
     # let username be a string variable
     username = StringVar()
     username_entry = Entry(main_win, textvariable=username, width=10, font=("Arial", 16))
-    username_entry.place(x=292, y=350)
+    username_entry.place(x=292, y=380)
     username.trace("w", lambda *args: character_limit(username))
 
     basic_button = Button(main_win, text="Basic", command=check_username_basic, font=("ARCADECLASSIC", 23, "bold"),
                           width=9, bg="green2", borderwidth=3, relief="raised")
     basic_button.place(x=195, y=430)
 
-    advanced_button = Button(main_win, text="Advanced", command=check_username_advanced, font=("ARCADECLASSIC", 23, "bold"),
+    advanced_button = Button(main_win, text="Advanced", command=check_username_advanced,
+                             font=("ARCADECLASSIC", 23, "bold"),
                              width=9, bg="yellow", borderwidth=3, relief="raised")
     advanced_button.place(x=100, y=500)
 
