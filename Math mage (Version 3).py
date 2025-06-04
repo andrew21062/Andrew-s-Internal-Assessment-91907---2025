@@ -1,5 +1,5 @@
 # Andrew Wong
-# Version 3.1.1
+# Version 3.1.2
 
 import pygame
 import random
@@ -92,6 +92,12 @@ expert_questions = [
     {"question": "2+4(3x+2)=2(5x+1)+14", "answer": 3}]
 
 
+# completely shutdown the program
+def terminate():
+    main_win.destroy()
+    pygame.mixer_music.stop()
+
+
 # battle BGM's settings
 def BGM():
     # import the music as mp3
@@ -107,16 +113,16 @@ def character_limit(username_entry):
     if len(username_entry.get()) > 0:
         username_entry.set(username_entry.get()[:10])
 
-
 # after clicking the basic difficulty, check the username's input
 def check_username_basic():
-    global username_entry
+    global user
 
+    user = username_entry.get()
     # remove leading and trailing spaces
-    username = username_entry.get().strip()
+    username_check = username_entry.get().strip()
 
     # if the entry is not empty after stripping spaces, then play BGM and move on to question screen
-    if username:
+    if username_check:
         BGM()
         basic_difficulty()
     else:
@@ -126,13 +132,14 @@ def check_username_basic():
 
 # after clicking the advanced difficulty, check the username's input
 def check_username_advanced():
-    global username_entry
+    global user
 
+    user = username_entry.get()
     # remove leading and trailing spaces
-    username = username_entry.get().strip()
+    username_check = username_entry.get().strip()
 
     # if the entry is not empty after stripping spaces, then play BGM and move on to question screen
-    if username:
+    if username_check:
         BGM()
         advanced_difficulty()
     else:
@@ -142,13 +149,14 @@ def check_username_advanced():
 
 # after clicking the expert difficulty, check the username's input
 def check_username_expert():
-    global username_entry
+    global user
 
+    user = username_entry.get()
     # remove leading and trailing spaces
-    username = username_entry.get().strip()
+    username_check = username_entry.get().strip()
 
     # if the entry is not empty after stripping spaces, then play BGM and move on to question screen
-    if username:
+    if username_check:
         BGM()
         expert_difficulty()
     else:
@@ -564,14 +572,14 @@ def result_screen():
     main_win.title('Result')
 
     # result screen's widgets
-    background_5 = Image.open("assets/backgrounds/result background 1.png")
+    background_5 = Image.open("assets/backgrounds/result background 2.png")
     background_5 = background_5.resize((560, 610), )
     result_background = ImageTk.PhotoImage(background_5)
 
     result_background_label = Label(main_win, image=result_background)
     result_background_label.place(x=-10, y=0)
 
-    text_1_label = Label(main_win, text=" You got: ", font=("ARCADECLASSIC", 30, "bold"))
+    text_1_label = Label(main_win, text=f"  {user} got: ", font=("ARCADECLASSIC", 30, "bold"))
     text_1_label.pack(pady=10)
 
     # if the more than 6 enemies had been defeated then:
@@ -579,26 +587,26 @@ def result_screen():
         # play victory music
         pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/audio/win sound.mp3"))
         # show grade A and score
-        result_label = Label(main_win, text=" A ", font=("ARCADECLASSIC", 125, "bold"), fg="green2")
+        result_label = Label(main_win, text="   A   ", font=("ARCADECLASSIC", 125, "bold"), fg="green2")
         result_label.pack()
-        score_label = Label(main_win, text="Score: 6/6", font=("ARCADECLASSIC", 30, "bold"))
+        score_label = Label(main_win, text=" Score: 6/6 ", font=("ARCADECLASSIC", 30, "bold"))
         score_label.pack()
     elif enemy_No == 6:
         # play victory music
         pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/audio/win sound.mp3"))
         # show grade A and score
-        result_label = Label(main_win, text=" A ", font=("ARCADECLASSIC", 125, "bold"), fg="green2")
+        result_label = Label(main_win, text="   A   ", font=("ARCADECLASSIC", 125, "bold"), fg="green2")
         result_label.pack()
-        score_label = Label(main_win, text="Score: 6/6", font=("ARCADECLASSIC", 30, "bold"))
+        score_label = Label(main_win, text=" Score: 6/6 ", font=("ARCADECLASSIC", 30, "bold"))
         score_label.pack()
     # if less than or equal to 2 enemies defeated then:
     elif enemy_No <= 2:
         # play game over music
         pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/audio/game over sound.mp3"))
         # show grade F and score
-        result_label = Label(main_win, text=" F ", font=("ARCADECLASSIC", 125, "bold"), fg="red4")
+        result_label = Label(main_win, text="   F   ", font=("ARCADECLASSIC", 125, "bold"), fg="red4")
         result_label.pack()
-        score_label = Label(main_win, text=f"Score: {enemy_No}/6", font=("ARCADECLASSIC", 30, "bold"))
+        score_label = Label(main_win, text=f" Score: {enemy_No}/6 ", font=("ARCADECLASSIC", 30, "bold"))
         score_label.pack()
     # if more than or equal to 4 enemies defeated then:
     elif enemy_No >= 4:
@@ -606,42 +614,44 @@ def result_screen():
         pygame.mixer_music.stop()
         pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/audio/win sound.mp3"))
         # show grade B and score
-        result_label = Label(main_win, text=" B ", font=("ARCADECLASSIC", 125, "bold"), fg="orange")
+        result_label = Label(main_win, text="   B   ", font=("ARCADECLASSIC", 125, "bold"), fg="orange")
         result_label.pack()
-        score_label = Label(main_win, text=f"Score: {enemy_No}/6", font=("ARCADECLASSIC", 30, "bold"))
+        score_label = Label(main_win, text=f" Score: {enemy_No}/6 ", font=("ARCADECLASSIC", 30, "bold"))
         score_label.pack()
     # if less than 4 enemies defeated then:
     elif enemy_No < 4:
         # play game over music
         pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/audio/game over sound.mp3"))
         # show grade C and score
-        result_label = Label(main_win, text=" C ", font=("ARCADECLASSIC", 125, "bold"), fg="red")
+        result_label = Label(main_win, text="   C   ", font=("ARCADECLASSIC", 125, "bold"), fg="red")
         result_label.pack()
-        score_label = Label(main_win, text=f"Score: {enemy_No}/6", font=("ARCADECLASSIC", 30, "bold"))
+        score_label = Label(main_win, text=f" Score: {enemy_No}/6 ", font=("ARCADECLASSIC", 30, "bold"))
         score_label.pack()
 
     # show basic difficulty
+    difficulty_label = Label(main_win, text=f"Difficulty:", font=("ARCADECLASSIC", 27, "bold"))
+    difficulty_label.pack(pady=10)
     if difficulty == 0:
-        level_label = Label(main_win, text=f"Difficulty: \nBasic", font=("ARCADECLASSIC", 30, "bold"), fg="green2")
-        level_label.pack(pady=5)
+        level_label = Label(main_win, text=f"    Basic    ", font=("ARCADECLASSIC", 30, "bold"), fg="green2")
+        level_label.pack()
     # show advanced difficulty
     if difficulty == 1:
-        level_label = Label(main_win, text=f"Difficulty: \nAdvanced", font=("ARCADECLASSIC", 30, "bold"), fg="orange")
-        level_label.pack(pady=5)
+        level_label = Label(main_win, text=f"   Advanced  ", font=("ARCADECLASSIC", 30, "bold"), fg="orange")
+        level_label.pack()
     # show expert difficulty
     if difficulty == 2:
-        level_label = Label(main_win, text=f"Difficulty: \nExpert ", font=("ARCADECLASSIC", 30, "bold"), fg="red")
-        level_label.pack(pady=5)
+        level_label = Label(main_win, text=f"    Expert   ", font=("ARCADECLASSIC", 30, "bold"), fg="red")
+        level_label.pack()
 
     # again button's settings
     again_button = Button(main_win, text="\u2764 Again", command=restart, font=("Helvetica", 23, "bold"), bg="white",
                           width=9, borderwidth=3, relief="raised")
-    again_button.place(x=80, y=450)
+    again_button.place(x=80, y=490)
     # end button's settings
     end_button = Button(main_win, text="\U0001F480 End", command=main_win.destroy, font=("Helvetica", 23, "bold"),
                         bg="white",
                         width=9, borderwidth=3, relief="raised")
-    end_button.place(x=295, y=450)
+    end_button.place(x=295, y=490)
 
     main_win.mainloop()
 
@@ -704,7 +714,7 @@ def basic_difficulty():
     get_basic_question()
     # check the player's HP for heart images
     check_player_hp()
-
+    
 
 # advanced questions screen's settings
 def advanced_difficulty():
@@ -832,7 +842,7 @@ def expert_difficulty():
 # the title screen's settings
 def title_screen():
     # Setting up variables
-    global player_hp, enemy_No, max_enemy, title_img_label, title_label, username_label
+    global player_hp, enemy_No, max_enemy, title_img_label, title_label, username, username_label
     global username_entry, basic_button, advanced_button, expert_button, info_screen
     player_hp = 3
     enemy_No = 0
@@ -880,6 +890,7 @@ main_win = Tk()
 main_win.geometry('550x600')
 main_win.resizable(width=False, height=False)
 main_win.title('MATH MAGE')
+main_win.protocol('WM_DELETE_WINDOW', terminate)
 
 # add new font
 pyglet.font.add_file('assets/font/ARCADECLASSIC.TTF')
