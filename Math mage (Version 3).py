@@ -1,5 +1,5 @@
 # Andrew Wong
-# Version 3 (background 2)
+# Version 3 (background 3)
 
 import pygame
 import random
@@ -851,7 +851,7 @@ def title_screen():
     info_screen = None
 
     # images' settings
-    background_1 = Image.open("assets/backgrounds/title background 2.png")
+    background_1 = Image.open("assets/backgrounds/title background 3.png")
     background_1 = background_1.resize((550, 600), )
     title_background = ImageTk.PhotoImage(background_1)
 
