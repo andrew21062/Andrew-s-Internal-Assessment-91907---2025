@@ -1,5 +1,5 @@
 # Andrew Wong
-# Version 3.1.2
+# Version 3 (background 1)
 
 import pygame
 import random
@@ -112,6 +112,7 @@ def BGM():
 def character_limit(username_entry):
     if len(username_entry.get()) > 0:
         username_entry.set(username_entry.get()[:10])
+
 
 # after clicking the basic difficulty, check the username's input
 def check_username_basic():
@@ -714,7 +715,7 @@ def basic_difficulty():
     get_basic_question()
     # check the player's HP for heart images
     check_player_hp()
-    
+
 
 # advanced questions screen's settings
 def advanced_difficulty():
