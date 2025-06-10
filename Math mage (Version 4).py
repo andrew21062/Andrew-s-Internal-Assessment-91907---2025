@@ -1,16 +1,17 @@
 # Andrew Wong
-# Version 4.1.0
+# Version 4.2.0
 
 import pygame
 import random
 import pyglet
 from tkinter import *
 from tkinter import messagebox
+from tkinter import Toplevel
 from PIL import Image, ImageTk
 
-
+# 'Enemy' is a class that contains all the image location of enemies used for this program
 class Enemy:
-    # the image list of all normal enemies
+    # the image location of all normal enemies made into a list
     enemy_list = [
         {"image": "assets/enemies/enemy1.png"}, {"image": "assets/enemies/enemy2.png"},
         {"image": "assets/enemies/enemy3.png"},
@@ -20,7 +21,7 @@ class Enemy:
         {"image": "assets/enemies/enemy9.png"},
         {"image": "assets/enemies/enemy10.png"}]
 
-    # the image list of all boss enemies
+    # the image location of all boss enemies made into a list
     boss_list = [
         {"image": "assets/bosses/boss 1.png"}, {"image": "assets/bosses/boss 2.png"},
         {"image": "assets/bosses/boss 3.png"}, {"image": "assets/bosses/boss 4.png"},
@@ -33,6 +34,54 @@ class Enemy:
 global enemy_list, boss_list
 list_1 = Enemy("enemy_list")
 list_2 = Enemy("boss_list")
+
+class InfoScreen:
+    def __init__(self, on_closing_callback):
+        self.info_screen = None
+        self.on_closing = on_closing_callback
+
+    def show_info_screen(self):
+        # Make sure only one info screen is opened at a time
+        if self.info_screen is None or not Toplevel.winfo_exists(self.info_screen):
+            # info screen's geometry
+            self.info_screen = Toplevel()
+            self.info_screen.geometry('450x330')
+            self.info_screen.configure(bg='white')
+            self.info_screen.resizable(width=False, height=False)
+            self.info_screen.title('Info screen')
+
+            # info screen's widgets
+            tutorials_title = Label(self.info_screen, text="How To Play \U0001F52A :", font=("Arial", 15, "bold"), bg='white')
+            tutorials_title.place(x=10, y=5)
+            tutorials_text_1 = Label(self.info_screen, text=" - You chose one of the four formulas/attack at the bottom. "
+                                                       "\n (\U000026A1, \U00002600, \U0001F319) The result of the chosen formula( x )"
+                                                       "\n  will be damage dealt to the enemy.", font=("Arial", 12), bg='white')
+            tutorials_text_1.place(x=0, y=50)
+            tutorials_text_2 = Label(self.info_screen, text=" - There are multiple solutions, however some formulas will "
+                                                       "\n insta kill the enemy.", font=("Arial", 12), bg='white')
+            tutorials_text_2.place(x=0, y=120)
+            tutorials_text_3 = Label(self.info_screen, text=" - If the chosen formula does not immediately defeat the enemy"
+                                                       "\n then you will loss one heart. When all hearts are lost, it "
+                                                       "\n will be game over, however if you defeat your current enemy "
+                                                       "\n you will regain all your hearts. \U0001F496", font=("Arial", 12), bg='white')
+            tutorials_text_3.place(x=0, y=170)
+            tutorials_text_4 = Label(self.info_screen, text=" - To win, you must defeat 6 enemies without losing all "
+                                                       "\n your hearts.", font=("Arial", 12), bg='white')
+            tutorials_text_4.place(x=0, y=260)
+
+            self.info_screen.protocol("WM_DELETE_WINDOW", self.on_closing)
+        else:
+            self.info_screen.focus()
+
+    def terminate_info(self):
+        self.info_screen.destroy()
+
+
+def on_closing():
+    info.terminate_info()
+
+info = InfoScreen(on_closing)
+
 
 # questions list for basic difficultly (with answers)
 basic_questions = [
@@ -377,11 +426,11 @@ def attack_effect():
     def update_frame(frame_index):
         try:
             attack_effect_label.config(image=frames[frame_index])
-            main_win.after(125, update_frame, (frame_index + 1) % len(frames))
+            main_win.after(70, update_frame, (frame_index + 1) % len(frames))
         except:
             pass
 
-    gif_path = "assets/attack gif/attack effect 3.gif"
+    gif_path = "assets/attack gif/attack effect 1.gif"
     image = Image.open(gif_path)
 
     # Convert the image to a format that can be used in Tkinter
@@ -502,43 +551,6 @@ def check_enemy_hp():
             else:
                 # check the player HP to refresh heart images
                 check_player_hp()
-
-
-# the info screen's settings
-def show_info_screen():
-    global info_screen
-
-    # Make sure only one info screen is opened at a time
-    if info_screen is None or not Toplevel.winfo_exists(info_screen):
-        # info screen's geometry
-        info_screen = Toplevel()
-        info_screen.geometry('450x330')
-        info_screen.resizable(width=False, height=False)
-        info_screen.title('Info screen')
-
-        # info screen's widgets
-        tutorials_title = Label(info_screen, text="How To Play \U0001F52A :", font=("ARCADECLASSIC", 15, "bold"))
-        tutorials_title.place(x=10, y=5)
-        tutorials_text_1 = Label(info_screen, text=" - You chose one of the four formulas/attack at the bottom. "
-                                                   "\n (\U000026A1, \U00002600, \U0001F319) The result of the chosen formula( x )"
-                                                   "\n  will be damage dealt to the enemy.", font=("ARCADECLASSIC", 12))
-        tutorials_text_1.place(x=0, y=50)
-        tutorials_text_2 = Label(info_screen, text=" - There are multiple solutions, however some formulas will "
-                                                   "\n insta kill the enemy.", font=("ARCADECLASSIC", 12))
-        tutorials_text_2.place(x=0, y=120)
-        tutorials_text_3 = Label(info_screen, text=" - If the chosen formula does not immediately defeat the enemy"
-                                                   "\n then you will loss one heart. When all hearts are lost, it "
-                                                   "\n will be game over, however if you defeat your current enemy "
-                                                   "\n you will regain all your hearts. \U0001F496",
-                                 font=("ARCADECLASSIC", 12))
-        tutorials_text_3.place(x=0, y=170)
-        tutorials_text_4 = Label(info_screen, text=" - To win, you must defeat 6 enemies without losing all "
-                                                   "\n your hearts", font=("ARCADECLASSIC", 12))
-        tutorials_text_4.place(x=0, y=260)
-
-        info_screen.protocol("WM_DELETE_WINDOW", on_closing)
-    else:
-        info_screen.focus()
 
 
 # close the info screen
@@ -709,7 +721,7 @@ def basic_difficulty():
                               borderwidth=2, relief="solid")
     question_No_label.place(x=480, y=10)
 
-    info_button = Button(main_win, text=" ? ", command=show_info_screen, font=("ARCADECLASSIC", 16, "bold"),
+    info_button = Button(main_win, text=" ? ", command=info.show_info_screen, font=("ARCADECLASSIC", 16, "bold"),
                          width=3, fg="green")
     info_button.place(x=480, y=360)
 
@@ -771,7 +783,7 @@ def advanced_difficulty():
                               borderwidth=2, relief="solid")
     question_No_label.place(x=480, y=10)
 
-    info_button = Button(main_win, text=" ? ", command=show_info_screen, font=("ARCADECLASSIC", 16, "bold"),
+    info_button = Button(main_win, text=" ? ", command=info.show_info_screen, font=("ARCADECLASSIC", 16, "bold"),
                          width=3, fg="green")
     info_button.place(x=480, y=360)
 
@@ -832,7 +844,7 @@ def expert_difficulty():
                               borderwidth=2, relief="solid")
     question_No_label.place(x=480, y=10)
 
-    info_button = Button(main_win, text=" ? ", command=show_info_screen, font=("ARCADECLASSIC", 16, "bold"),
+    info_button = Button(main_win, text=" ? ", command=info.show_info_screen, font=("ARCADECLASSIC", 16, "bold"),
                          width=3, fg="green")
     info_button.place(x=480, y=360)
 
@@ -905,6 +917,5 @@ def main():  # the main loop of the program start here
     pygame.mixer.init()
     # open title screen
     title_screen()
-
 
 main()  # start the program
