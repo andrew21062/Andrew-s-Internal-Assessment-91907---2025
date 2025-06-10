@@ -1,5 +1,5 @@
 # Andrew Wong
-# version 2 (heart 2)
+# version 2 (heart 3)
 
 
 import pygame
@@ -258,7 +258,7 @@ def check_player_hp():
         pass
 
     # import heart image
-    heart_img = Image.open("assets/player HP/heart 2.png")
+    heart_img = Image.open("assets/player HP/heart 3.png")
     # resize the image to 65x65 pixels
     heart_img = heart_img.resize((65, 65), )
     life_img = ImageTk.PhotoImage(heart_img)
