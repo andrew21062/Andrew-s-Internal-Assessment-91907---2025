@@ -1,6 +1,6 @@
 # Andrew Wong
-# version 2.00
-# 21/5/25
+# version 2 (heart 1)
+
 
 import pygame
 import random
