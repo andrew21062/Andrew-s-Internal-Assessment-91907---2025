@@ -1,5 +1,5 @@
 # Andrew Wong
-# Version 4.2.0
+# Version 4 (attack effect 1)
 
 import pygame
 import random
