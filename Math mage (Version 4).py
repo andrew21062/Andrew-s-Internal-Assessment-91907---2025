@@ -1,5 +1,5 @@
 # Andrew Wong
-# Version 4.0.0
+# Version 4.1.0
 
 import pygame
 import random
@@ -377,11 +377,11 @@ def attack_effect():
     def update_frame(frame_index):
         try:
             attack_effect_label.config(image=frames[frame_index])
-            main_win.after(70, update_frame, (frame_index + 1) % len(frames))
+            main_win.after(125, update_frame, (frame_index + 1) % len(frames))
         except:
             pass
 
-    gif_path = "assets/attack gif/attack effect 2.gif"
+    gif_path = "assets/attack gif/attack effect 3.gif"
     image = Image.open(gif_path)
 
     # Convert the image to a format that can be used in Tkinter
