@@ -1,5 +1,5 @@
 # Andrew Wong
-# Version 4.3.0
+# Version 4.4.0
 
 import pygame
 import random
@@ -430,7 +430,7 @@ def attack_effect():
         except:
             pass
 
-    gif_path = "assets/attack gif/attack effect 1.gif"
+    gif_path = "assets/attack gif/attack effect 2.gif"
     image = Image.open(gif_path)
 
     # Convert the image to a format that can be used in Tkinter
