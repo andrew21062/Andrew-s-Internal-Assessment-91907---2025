@@ -1,5 +1,5 @@
 # Andrew Wong
-# Version 5 (Button set 1)
+# Version 5 (Button set 2)
 # The purpose of my program is to improve year 11 students’ algebra by making solving questions more fun and engaging.
 
 # Import the libraries needed to run this program.
@@ -950,15 +950,15 @@ def title_screen():
     background_1 = background_1.resize((550, 600), )
     title_background = ImageTk.PhotoImage(background_1)
 
-    basic_img = Image.open("assets/buttons/basic button 1.png")
+    basic_img = Image.open("assets/buttons/basic button 2.png")
     basic_img = basic_img.resize((150, 70))
     basic_button_img = ImageTk.PhotoImage(basic_img)
 
-    advance_img = Image.open("assets/buttons/advance button 1.png")
+    advance_img = Image.open("assets/buttons/advance button 2.png")
     advance_img = advance_img.resize((150, 70))
     advance_button_img = ImageTk.PhotoImage(advance_img)
 
-    expert_img = Image.open("assets/buttons/expert button 1.png")
+    expert_img = Image.open("assets/buttons/expert button 2.png")
     expert_img = expert_img.resize((150, 70))
     expert_button_img = ImageTk.PhotoImage(expert_img)
 
@@ -977,13 +977,13 @@ def title_screen():
     username_entry.place(x=292, y=380)
     username.trace("w", lambda *args: character_limit(username))
 
-    basic_button = Button(main_win, image=basic_button_img, command=check_username_basic, bg="green2", borderwidth=3, relief="raised")
+    basic_button = Button(main_win, image=basic_button_img, command=check_username_basic, bg="white", borderwidth=3, relief="raised")
     basic_button.place(x=205, y=425)
 
-    advanced_button = Button(main_win, image=advance_button_img, command=check_username_advanced, bg="yellow", borderwidth=3, relief="raised")
+    advanced_button = Button(main_win, image=advance_button_img, command=check_username_advanced, bg="white", borderwidth=3, relief="raised")
     advanced_button.place(x=100, y=508)
 
-    expert_button = Button(main_win, image=expert_button_img, command=check_username_expert, bg="red", borderwidth=3, relief="raised")
+    expert_button = Button(main_win, image=expert_button_img, command=check_username_expert, bg="white", borderwidth=3, relief="raised")
     expert_button.place(x=300, y=508)
 
     main_win.mainloop()
