@@ -1,6 +1,5 @@
 # Andrew Wong
-# 25/6/25
-# Version 5.1.0
+# Version 5 (Button set 1)
 # The purpose of my program is to improve year 11 students’ algebra by making solving questions more fun and engaging.
 
 # Import the libraries needed to run this program.
