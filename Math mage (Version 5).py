@@ -1,5 +1,7 @@
 # Andrew Wong
-# Version 5.0.0
+# 25/6/25
+# Version 5.1.0
+# The purpose of my program is to improve year 11 students’ algebra by making solving questions more fun and engaging.
 
 # Import the libraries needed to run this program.
 import pygame
@@ -580,6 +582,46 @@ def check_enemy_hp():
                 # Check the player HP to refresh heart images.
                 check_player_hp()
 
+# A function that adds the player's score to a text file.
+def add_record():
+    # Set the username into another variable.
+    username = f"\nUSERNAME: {user} "
+
+    # If difficulty is 0 then set 'Basic' as the 'difficulty_level'.
+    if difficulty == 0:
+        difficulty_level = "DIFFICULTY: Basic"
+    # If difficulty is 0 then set 'Advanced' as the 'difficulty_level'.
+    elif difficulty == 1:
+        difficulty_level = "DIFFICULTY: Advanced"
+    # If difficulty is 0 then set 'Expert' as the 'difficulty_level'.
+    elif difficulty == 2:
+        difficulty_level = "DIFFICULTY: Expert"
+
+    # If the player had defeated more than 6 enemies, then set 'rank' to 'A' and 'score' to '6/6'.
+    if enemy_No > 6:
+        rank = "RANK: A"
+        score = "SCORE: 6/6"
+    # If the player had defeated exactly 6 enemies, then set 'rank' to 'A' and 'score' to '6/6'.
+    elif enemy_No == 6:
+        rank = "RANK: A"
+        score = "SCORE: 6/6"
+    # If the player had defeated exactly 2 or less enemies, then set 'rank' to 'F' and 'score' to the amount of enemies they defeated.
+    elif enemy_No <= 2:
+        rank = "RANK: F"
+        score = f"SCORE: {enemy_No}/6"
+    # If the player had defeated exactly 4 or more enemies, then set 'rank' to 'B' and 'score' to the amount of enemies they defeated.
+    elif enemy_No >= 4:
+        rank = "RANK: B"
+        score = f"SCORE: {enemy_No}/6"
+    # If the player had defeated less than 4 enemies, then set 'rank' to 'C' and 'score' to the amount of enemies they defeated.
+    elif enemy_No < 4:
+        rank = "RANK: C"
+        score = f"SCORE: {enemy_No}/6"
+
+    # Append 'username', 'difficulty_level', 'rank' and 'score' to the 'Players_score.txt' text file.
+    with open("Players_score.txt", "a") as file:
+        file.write(f"{username}, {difficulty_level}, {rank}, {score}\n")
+
 
 # A function that restart the whole program.
 def restart():
@@ -603,6 +645,9 @@ def result_screen():
 
     # Stop the BGM.
     pygame.mixer_music.stop()
+
+    # Add record to the score board.
+    add_record()
 
     # Change the window's title.
     main_win.title('Result')
@@ -749,7 +794,7 @@ def basic_difficulty():
                               borderwidth=2, relief="solid")
     question_No_label.place(x=480, y=10)
 
-    info_button = Button(main_win, text=" ? ", command=info.show_info_screen, font=("ARCADECLASSIC", 16, "bold"),
+    info_button = Button(main_win, text=" ? ", command=info.show_info_screen, font=("ARCADECLASSIC", 20, "bold"),
                          width=3, fg="green")
     info_button.place(x=480, y=360)
 
@@ -895,7 +940,7 @@ def expert_difficulty():
 def title_screen():
     # Set up variables.
     global player_hp, enemy_No, max_enemy, title_img_label, title_label, username, username_label
-    global username_entry, basic_button, advanced_button, expert_button, info_screen
+    global username_entry, basic_button, advanced_button, expert_button, info_screen, mute_value
     player_hp = 3
     enemy_No = 0
     max_enemy = 6
