@@ -59,7 +59,7 @@ class InfoScreen:
             # Info screen's widgets.
             tutorials_title = Label(self.info_screen, text="How To Play \U0001F52A :", font=("Arial", 15, "bold"), bg='white')
             tutorials_title.place(x=10, y=5)
-            tutorials_text_1 = Label(self.info_screen, text=" - To attack chose one of the four formulas/attacks at the bottom. "
+            tutorials_text_1 = Label(self.info_screen, text=" - To attack chose one of the three formulas/attacks at the bottom. "
                                                        "\n (\U000026A1, \U00002600, \U0001F319) The result of the chosen formula( x )"
                                                        "\n  will be damage dealt to the enemy.", font=("Arial", 12), bg='white')
             tutorials_text_1.place(x=0, y=50)
