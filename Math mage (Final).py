@@ -39,48 +39,69 @@ class Enemy:
 list_1 = Enemy("enemy_list")
 list_2 = Enemy("boss_list")
 
-# 'InfoScreen' is a class that contains all the attributes of the Info screen.
+# 'InfoScreen' is a class that contains all the attributes of the Info window.
 class InfoScreen:
     # Turn 'InfoScreen' into a class.
     def __init__(self, on_closing_callback):
         self.info_screen = None
         self.on_closing = on_closing_callback
-    # A function that has all the attributes of the Info screen.
+    # A function that has all the attributes of the Info window.
     def show_info_screen(self):
-        # Make sure only one info screen is opened at a time.
+        # Make sure only one info window is opened at a time.
         if self.info_screen is None or not Toplevel.winfo_exists(self.info_screen):
-            # Info screen's window settings.
+            # Info window's settings.
             self.info_screen = Toplevel()
-            self.info_screen.geometry('450x330')
+            self.info_screen.geometry('500x610')
             self.info_screen.configure(bg='white')
             self.info_screen.resizable(width=False, height=False)
-            self.info_screen.title('Info screen')
+            self.info_screen.title('Info')
 
-            # Info screen's widgets.
-            tutorials_title = Label(self.info_screen, text="How To Play \U0001F52A :", font=("Arial", 15, "bold"), bg='white')
-            tutorials_title.place(x=10, y=5)
-            tutorials_text_1 = Label(self.info_screen, text=" - To attack chose one of the three formulas/attacks at the bottom. "
-                                                       "\n (\U000026A1, \U00002600, \U0001F319) The result of the chosen formula( x )"
-                                                       "\n  will be damage dealt to the enemy.", font=("Arial", 12), bg='white')
-            tutorials_text_1.place(x=0, y=50)
-            tutorials_text_2 = Label(self.info_screen, text=" - There are multiple solutions, and some formulas will even "
-                                                       "\n instantly kill the enemy.", font=("Arial", 12), bg='white')
-            tutorials_text_2.place(x=0, y=120)
-            tutorials_text_3 = Label(self.info_screen, text=" - If the chosen formula does not immediately defeat the"
-                                                       "\n    enemy, then the player will loss one heart \U0001F496. When all hearts"
-                                                       "\n    are lost, it will be game over, however if the player defeats"
-                                                       "\n    their current enemy then they will regain all their hearts.",
-                                                        font=("Arial", 12), bg='white')
-            tutorials_text_3.place(x=0, y=170)
-            tutorials_text_4 = Label(self.info_screen, text=" - To win, you must defeat 6 enemies without losing all "
-                                                       "\n your hearts.", font=("Arial", 12), bg='white')
-            tutorials_text_4.place(x=0, y=260)
+            # Info window's widgets.
+            guide_title_1= Label(self.info_screen, text="Goal:", font=("Arial", 15, "bold"), bg='white')
+            guide_title_1.pack(padx=5, pady=5)
+
+            guide_text_1 = Label(self.info_screen, text="The goal of the game is to beat 6 enemies by picking the "
+                                                        "\n attack/equation that does the most damage. This is shown at the"
+                                                        "\n top right corner.", font=("Arial", 12), bg='white')
+            guide_text_1.pack(padx=5, pady=5)
+            guide_text_2 = Label(self.info_screen, text="To defeat enemies you must decrease their HP to 0, this is shown"
+                                                        "\n as HP=0 below the enemy’s image. You will only get to pick 3 "
+                                                        "\n attack/equations per enemy, this is shown as the red hearts at the"
+                                                        "\n top left corner. If you lose all your hearts then it is game over, you"
+                                                        "\n would only recover all your hearts when you defeat your current "
+                                                        "\n enemy.", font=("Arial", 12), bg='white')
+            guide_text_2.pack(padx=5, pady=5)
+            guide_title_2 = Label(self.info_screen, text="\n How To Play \U0001F52A :", font=("Arial", 15, "bold"), bg='white')
+            guide_title_2.pack(padx=5, pady=5)
+            guide_text_1 = Label(self.info_screen, text=" 1. Find the values of ‘x’ from the equations below.", font=("Arial", 12), bg='white')
+            guide_text_1.pack(padx=5, pady=5)
+
+            guide_text_2 = Label(self.info_screen, text="2. Pick the ‘x’ with the highest value as your attack. You would"
+                                         "\n lose one heart for attacking, but the enemy's HP should also "
+                                         "\n decrease (assuming you didn’t pick the equation that would "
+                                         "\n give x=0).", font=("Arial", 12), bg='white')
+            guide_text_2.pack(padx=5, pady=5)
+
+            guide_text_3 = Label(self.info_screen, text="3. Repeat step 1 and 2 if the enemy still has HP. Be mindful of "
+                                         "\n the hearts you have left, when you no hearts left it will be"
+                                         "\n gameover!", font=("Arial", 12), bg='white')
+            guide_text_3.pack(padx=5, pady=5)
+
+            guide_text_4 = Label(self.info_screen, text="4. If an enemy is defeated then you would see a special effect of"
+                                         "\n them exploding in purple magic, next a new enemy would "
+                                         "\n appear.", font=("Arial", 12), bg='white')
+            guide_text_4.pack(padx=5, pady=5)
+            guide_text_5 = Label(self.info_screen, text="5. Repeat steps 1 to 3 until you have defeated all the enemy or "
+                                         "\n lost all your hearts.", font=("Arial", 12), bg='white')
+            guide_text_5.pack(padx=5, pady=5)
+
+
         else:
-            # Focus on the Info screen.
+            # Focus on the Info window.
             self.info_screen.focus()
 
 
-# A function that closes the Info screen
+# A function that closes the Info window.
 def on_closing():
     info.terminate_info()
 
@@ -636,6 +657,43 @@ def restart():
     except:
         pass
 
+# A function that displays the tutorial window.
+def tutorial():
+
+    # Info screen's window settings.
+    tutorial_screen = Toplevel()
+    tutorial_screen.geometry('480x390')
+    tutorial_screen.configure(bg='white')
+    tutorial_screen.resizable(width=False, height=False)
+    tutorial_screen.title('Tutorial')
+
+    # Info screen's widgets.
+    tutorial_title = Label(tutorial_screen, text="How to fight like a mage :", font=("Arial", 15, "bold"), bg='white')
+    tutorial_title.pack(padx=5, pady=5)
+    tutorial_text_1 = Label(tutorial_screen, text=" 1. Find the values of ‘x’ from the equations below.", font=("Arial", 12), bg='white')
+    tutorial_text_1.pack(padx=5, pady=5)
+    tutorial_text_2 = Label(tutorial_screen, text="2. Pick the ‘x’ with the highest value as your attack. You would"
+                                                  "\n lose one heart for attacking, but the enemy's HP should also "
+                                                  "\n decrease (assuming you didn’t pick the equation that would "
+                                                  "\n give x=0).", font=("Arial", 12), bg='white')
+    tutorial_text_2.pack(padx=5, pady=5)
+    tutorial_text_3 = Label(tutorial_screen, text="3. Repeat step 1 and 2 if the enemy still has HP. Be mindful of "
+                                                  "\n the hearts you have left, when you no hearts left it will be"
+                                                  "\n gameover!", font=("Arial", 12), bg='white')
+    tutorial_text_3.pack(padx=5, pady=5)
+    tutorial_text_4 = Label(tutorial_screen, text="4. If an enemy is defeated then you would see a special effect of"
+                                                  "\n them exploding in purple magic, next a new enemy would "
+                                                  "\n appear.", font=("Arial", 12), bg='white')
+    tutorial_text_4.pack(padx=5, pady=5)
+    tutorial_text_5 = Label(tutorial_screen,text="5. Repeat steps 1 to 3 until you have defeated all the enemy or "
+                                                 "\n lost all your hearts.", font=("Arial", 12), bg='white')
+    tutorial_text_5.pack(padx=5, pady=5)
+    tutorial_text_6 = Label(tutorial_screen,text="Good Luck Mage", font=("Arial", 12), bg='white')
+    tutorial_text_6.pack(padx=5, pady=5)
+
+    # Focus on the tutorial window.
+    tutorial_screen.focus()
+    tutorial_screen.grab_set()
 
 # A function that contains the result screen's settings.
 def result_screen():
@@ -762,6 +820,11 @@ def basic_difficulty():
     except:
         pass
 
+    # If no enemies had been defeated then show the tutorial window.
+    if enemy_No == 0:
+        # Show the tutorial to the player.
+        tutorial()
+
     # Create widgets.
     background_2 = Image.open("assets/backgrounds/basic background.png")
     background_2 = background_2.resize((560, 610), )
@@ -825,6 +888,11 @@ def advanced_difficulty():
         pygame.mixer_music.unpause()
     except:
         pass
+
+    # If no enemies had been defeated then show the tutorial window.
+    if enemy_No == 0:
+        # Show the tutorial to the player.
+        tutorial()
 
     # Create widgets.
     background_3 = Image.open("assets/backgrounds/advanced background.png")
@@ -891,6 +959,11 @@ def expert_difficulty():
         pygame.mixer_music.unpause()
     except:
         pass
+
+    # If no enemies had been defeated then show the tutorial window.
+    if enemy_No == 0:
+        # Show the tutorial to the player.
+        tutorial()
 
     # Create widgets.
     background_4 = Image.open("assets/backgrounds/expert background.png")
@@ -991,6 +1064,7 @@ def title_screen():
     expert_button = Button(main_win, image=expert_button_img, command=check_username_expert, bg="red", borderwidth=3, relief="raised")
     expert_button.place(x=300, y=508)
 
+    # Make this the main loop of the program.
     main_win.mainloop()
 
 
